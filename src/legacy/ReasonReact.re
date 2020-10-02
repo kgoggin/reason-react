@@ -157,6 +157,8 @@ type jsComponentThis('state, 'props, 'retainedProps, 'action) = {
  */
 and totalState('state, 'retainedProps, 'action) = {. "reasonState": 'state};
 
+exception InvalidJStoReasonProps(string);
+
 let anyToUnit = _ => ();
 
 let anyToTrue = _ => true;
@@ -178,7 +180,7 @@ let convertPropsIfTheyreFromJs = (props, jsPropsToReason, debugName) => {
   | (None, Some(toReasonProps)) => Element(toReasonProps(. props))
   | (None, None) =>
     raise(
-      Invalid_argument(
+      InvalidJStoReasonProps(
         "A JS component called the Reason component "
         ++ debugName
         ++ " which didn't implement the JS->Reason React props conversion.",
